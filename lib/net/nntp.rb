@@ -48,6 +48,14 @@ module Net
       request Stat.new(param.chomp)
     end
 
+    def next
+      request Next.new
+    end
+
+    def prev
+      request Prev.new
+    end
+
     def quit
       request Quit.new
     end

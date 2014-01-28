@@ -64,16 +64,27 @@ module Net
     end
   end
 
-  class StatResponse < NNTPOKResponse
+  module StatResponseParser
     PARSE_RE = /(\d*)\s(.*)/i
 
     attr_reader :article_num, :message_id
 
     def parse
       super
-      @article_num  = message[PARSE_RE, 1]
+      @article_num  = message[PARSE_RE, 1].to_i
       @message_id   = message[PARSE_RE, 2]
     end
   end
 
+  class StatResponse < NNTPOKResponse
+    include StatResponseParser
+  end
+
+  class NextResponse < NNTPOKResponse
+    include StatResponseParser
+  end
+
+  class PrevResponse < NNTPOKResponse
+    include StatResponseParser
+  end
 end

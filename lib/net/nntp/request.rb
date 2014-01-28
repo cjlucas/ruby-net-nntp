@@ -80,5 +80,25 @@ module Net
         StatResponse
       end
     end
+
+    class Next < NNTPRequest
+      def initialize
+        super("NEXT")
+      end
+
+      def resp_klass(code)
+        PrevResponse
+      end
+    end
+
+    class Prev < NNTPRequest
+      def initialize
+        super("PREV")
+      end
+
+      def resp_klass(code)
+        PrevResponse
+      end
+    end
   end
 end
