@@ -11,6 +11,7 @@ describe Net::NNTP::Group do
   it "returns the correct response class" do
     req = Net::NNTP::Group.new
     req.response_class(211).should eq(Net::NNTPGroupResponse)
+    req.response_class(411).should eq(Net::InvalidNewsgroupError)
   end
 end
 

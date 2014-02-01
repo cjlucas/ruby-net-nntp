@@ -36,6 +36,8 @@ module Net
     end
   end
 
+  # 411
+  InvalidNewsgroupError = Class.new(NNTPErrorResponse)
   # 412
   NoNewsgroupSelectedError = Class.new(NNTPErrorResponse)
   # 420
@@ -47,6 +49,7 @@ module Net
 
   NNTP_RESPONSES = {
     #(0..501) => NNTPResponse,
+    411 => InvalidNewsgroupError,
     412 => NoNewsgroupSelectedError,
     420 => InvalidArticleNumberError,
     421 => NoArticleFoundError,
