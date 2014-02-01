@@ -37,24 +37,24 @@ module Net
   end
 
   # 411
-  InvalidNewsgroupError = Class.new(NNTPErrorResponse)
+  NNTPInvalidNewsgroupError = Class.new(NNTPErrorResponse)
   # 412
-  NoNewsgroupSelectedError = Class.new(NNTPErrorResponse)
+  NNTPNoNewsgroupSelectedError = Class.new(NNTPErrorResponse)
   # 420
-  InvalidArticleNumberError = Class.new(NNTPErrorResponse)
+  NNTPInvalidArticleNumberError = Class.new(NNTPErrorResponse)
   # 421, 422, 423, 430
-  NoArticleFoundError = Class.new(NNTPErrorResponse)
+  NNTPNoArticleFoundError = Class.new(NNTPErrorResponse)
 
 
 
   NNTP_RESPONSES = {
     #(0..501) => NNTPResponse,
-    411 => InvalidNewsgroupError,
-    412 => NoNewsgroupSelectedError,
-    420 => InvalidArticleNumberError,
-    421 => NoArticleFoundError,
-    422 => NoArticleFoundError,
-    423 => NoArticleFoundError,
-    430 => NoArticleFoundError,
+    411 => NNTPInvalidNewsgroupError,
+    412 => NNTPNoNewsgroupSelectedError,
+    420 => NNTPInvalidArticleNumberError,
+    421 => NNTPNoArticleFoundError,
+    422 => NNTPNoArticleFoundError,
+    423 => NNTPNoArticleFoundError,
+    430 => NNTPNoArticleFoundError,
   }
 end
