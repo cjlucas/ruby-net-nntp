@@ -8,7 +8,7 @@ module Net
     def initialize(host, port, user, pass)
       @socket = TCPSocket.new(host, port)
       read_greeting
-      login(user, pass)
+      login(user, pass) unless [user, pass].include?(nil)
     end
 
     def login(user, pass)
@@ -27,7 +27,7 @@ module Net
       resp = NNTPResponse.parse(raw)
       puts "<<< #{resp.raw}"
 
-      resp = req.resp_klass(resp.code).parse(raw)
+      resp = req.response_class(resp.code).parse(raw)
 
       if resp.needs_long_response?
         resp.data = read_long_response

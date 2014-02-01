@@ -2,103 +2,63 @@ require_relative 'response'
 
 module Net
   class NNTPRequest
+    RESPONSES = NNTP_RESPONSES
     attr_accessor :raw
 
-    def initialize(raw)
-      @raw = raw
+    def initialize(*params)
+      raw_a = []
+      raw_a << self.class::METHOD
+      params.each { |param| raw_a << param }
+      @raw = raw_a.join(' ')
     end
 
-    def resp_klass(code)
-      NNTPOKResponse
+    def response_class(code)
+      self.class::RESPONSES.each do |key, resp_klass|
+        if key.is_a?(Fixnum)
+          return resp_klass if key == code
+        elsif key.is_a?(Range)
+          return resp_klass if key.include?(code)
+        end
+      end
+
+      # TODO: check if superclass has RESPONSES constant first
+      super(code)
     end
   end
 
   class NNTP
-
-    #
-    # DATE
-    #
-
     class Date < NNTPRequest
-      def initialize
-        super('DATE')
-      end
-
-      def resp_klass(code)
-        DateResponse
-      end
+      METHOD = 'DATE'
     end
-
-    #
-    # GROUP
-    #
 
     class Group < NNTPRequest
-      def initialize(group)
-        super("GROUP #{group}")
-      end
-
-      def resp_klass(code)
-        code == 211 ? GroupResponse : Response
-      end
+      METHOD = 'GROUP'
+      RESPONSES = { 211 => NNTPGroupResponse }
     end
-
-    #
-    # ARTICLE
-    #
 
     class Article < NNTPRequest
-      def initialize(param)
-        super("ARTICLE #{param}")
-      end
-
-      def resp_klass(code)
-        ArticleResponse
-      end
+      METHOD = 'ARTICLE'
     end
 
-    #
-    # QUIT
-    #
-
     class Quit < NNTPRequest
-      def initialize
-        super('QUIT')
-      end
-
-      def resp_klass(code)
-        QuitResponse
-      end
+      METHOD = 'QUIT'
     end
 
     class Stat < NNTPRequest
-      def initialize(param)
-        super("STAT #{param}")
-      end
-
-      def resp_klass(code)
-        StatResponse
-      end
+      METHOD = 'STAT'
     end
 
     class Next < NNTPRequest
-      def initialize
-        super("NEXT")
-      end
-
-      def resp_klass(code)
-        PrevResponse
-      end
+      METHOD = 'NEXT'
+      RESPONSES = { 223 => NNTPNextResponse }
     end
 
     class Prev < NNTPRequest
-      def initialize
-        super("PREV")
-      end
-
-      def resp_klass(code)
-        PrevResponse
-      end
+      METHOD = 'PREV'
     end
   end
+
+  NNTP_RESPONSES = {
+    (0..501) => NNTPResponse,
+  }
 end
