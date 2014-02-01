@@ -18,6 +18,10 @@ describe Net::NNTP::Article do
   it "returns the correct response class" do
     req = Net::NNTP::Article.new
     req.response_class(220).should eq(Net::NNTPArticleResponse)
+    req.response_class(412).should eq(Net::NoNewsgroupSelectedError)
+    req.response_class(420).should eq(Net::InvalidArticleNumberError)
+    req.response_class(423).should eq(Net::NoArticleFoundError)
+    req.response_class(430).should eq(Net::NoArticleFoundError)
   end
 end
 
@@ -32,13 +36,21 @@ describe Net::NNTP::Stat do
   it "returns the correct response class" do
     req = Net::NNTP::Stat.new
     req.response_class(223).should eq(Net::NNTPStatResponse)
+    req.response_class(412).should eq(Net::NoNewsgroupSelectedError)
+    req.response_class(420).should eq(Net::InvalidArticleNumberError)
+    req.response_class(423).should eq(Net::NoArticleFoundError)
+    req.response_class(430).should eq(Net::NoArticleFoundError)
   end
 end
 
-describe Net::NNTP::Prev do
+describe Net::NNTP::Last do
   it "returns the correct response class" do
-    req = Net::NNTP::Prev.new
-    req.response_class(223).should eq(Net::NNTPPrevResponse)
+    req = Net::NNTP::Last.new
+    req.response_class(223).should eq(Net::NNTPLastResponse)
+    req.response_class(412).should eq(Net::NoNewsgroupSelectedError)
+    req.response_class(420).should eq(Net::InvalidArticleNumberError)
+    req.response_class(422).should eq(Net::NoArticleFoundError)
+    req.response_class(423).should eq(Net::NoArticleFoundError)
   end
 end
 
@@ -46,5 +58,9 @@ describe Net::NNTP::Next do
   it "returns the correct response class" do
     req = Net::NNTP::Next.new
     req.response_class(223).should eq(Net::NNTPNextResponse)
+    req.response_class(412).should eq(Net::NoNewsgroupSelectedError)
+    req.response_class(420).should eq(Net::InvalidArticleNumberError)
+    req.response_class(421).should eq(Net::NoArticleFoundError)
+    req.response_class(423).should eq(Net::NoArticleFoundError)
   end
 end

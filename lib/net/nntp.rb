@@ -52,8 +52,8 @@ module Net
       request Next.new
     end
 
-    def prev
-      request Prev.new
+    def last
+      request Last.new
     end
 
     def quit

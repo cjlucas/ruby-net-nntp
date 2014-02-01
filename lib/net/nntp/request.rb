@@ -13,16 +13,22 @@ module Net
     end
 
     def response_class(code)
-      self.class::RESPONSES.each do |key, resp_klass|
-        if key.is_a?(Fixnum)
-          return resp_klass if key == code
-        elsif key.is_a?(Range)
-          return resp_klass if key.include?(code)
+      klass = self.class
+
+      # traverse the ancestor chain until we find a valid response
+      while klass.constants.include?(:RESPONSES)
+        klass::RESPONSES.each do |key, resp_klass|
+          if key.is_a?(Fixnum)
+            return resp_klass if key == code
+          elsif key.is_a?(Range)
+            return resp_klass if key.include?(code)
+          end
         end
+
+        klass = klass.superclass
       end
 
-      # TODO: check if superclass has RESPONSES constant first
-      super(code)
+      raise Error, 'could not find a valid response'
     end
   end
 
@@ -39,13 +45,7 @@ module Net
 
     class Article < NNTPRequest
       METHOD = 'ARTICLE'
-      RESPONSES = {
-        220 => NNTPArticleResponse,
-        #412 no newsgroup selected
-        #420 article number invalid
-        #423 no article with that number
-        #430 (no article with that message id)
-      }
+      RESPONSES = { 220 => NNTPArticleResponse }
     end
 
     class Quit < NNTPRequest
@@ -55,34 +55,17 @@ module Net
 
     class Stat < NNTPRequest
       METHOD = 'STAT'
-      RESPONSES = {
-        223 => NNTPStatResponse,
-        #412 no newsgroup selected
-        #420 current article number is invalid
-        #423 no article with that number
-        #430 (no article with that message id)
-      }
+      RESPONSES = { 223 => NNTPStatResponse }
     end
 
     class Next < NNTPRequest
       METHOD = 'NEXT'
-      RESPONSES = {
-        223 => NNTPNextResponse,
-        #412 no newsgroup selected
-        #420 current article number is invalid
-        #421 no next article in this group
-      }
+      RESPONSES = { 223 => NNTPNextResponse }
     end
 
-    # TODO: change me to Last
-    class Prev < NNTPRequest
-      METHOD = 'PREV'
-      RESPONSES = {
-        223 => NNTPPrevResponse,
-        #412 no newsgroup selected
-        #420 current article number is invalid
-        #422 no previous article in this group
-      }
+    class Last < NNTPRequest
+      METHOD = 'LAST'
+      RESPONSES = { 223 => NNTPLastResponse }
     end
 
   end

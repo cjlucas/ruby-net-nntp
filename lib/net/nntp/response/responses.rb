@@ -12,7 +12,7 @@ module Net
     include NNTPStatResponseParser
   end
 
-  class NNTPPrevResponse < NNTPOKResponse
+  class NNTPLastResponse < NNTPOKResponse
     include NNTPStatResponseParser
   end
 
@@ -36,7 +36,22 @@ module Net
     end
   end
 
+  # 412
+  NoNewsgroupSelectedError = Class.new(NNTPErrorResponse)
+  # 420
+  InvalidArticleNumberError = Class.new(NNTPErrorResponse)
+  # 421, 422, 423, 430
+  NoArticleFoundError = Class.new(NNTPErrorResponse)
+
+
+
   NNTP_RESPONSES = {
-    (0..501) => NNTPResponse,
+    #(0..501) => NNTPResponse,
+    412 => NoNewsgroupSelectedError,
+    420 => InvalidArticleNumberError,
+    421 => NoArticleFoundError,
+    422 => NoArticleFoundError,
+    423 => NoArticleFoundError,
+    430 => NoArticleFoundError,
   }
 end

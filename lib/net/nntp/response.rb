@@ -26,6 +26,7 @@ module Net
   end
 
   NNTPOKResponse = Class.new(NNTPResponse)
+  NNTPErrorResponse = Class.new(NNTPResponse)
 
   class NNTPLongResponse < NNTPOKResponse
     def needs_long_response?
