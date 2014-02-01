@@ -1,15 +1,12 @@
 require_relative 'response'
 
 module Net
-  class NNTPRequest
+  class NNTPGenericRequest
     RESPONSES = ::Net::NNTP_RESPONSES
-    attr_accessor :raw
+    attr_reader :raw
 
-    def initialize(*params)
-      raw_a = []
-      raw_a << self.class::METHOD
-      params.each { |param| raw_a << param }
-      @raw = raw_a.join(' ')
+    def initialize(raw)
+      @raw = raw
     end
 
     def response_class(code)
@@ -28,9 +25,32 @@ module Net
         klass = klass.superclass
       end
 
-      raise Error, 'could not find a valid response'
+      raise Exception, 'could not find a valid response'
     end
   end
+
+  class NNTPRequest < NNTPGenericRequest
+    def initialize(*params)
+      super("#{self.class::METHOD} #{process_parameters(params)}")
+    end
+
+    def process_parameters(params)
+      processed = []
+      params.each do |param|
+        val = case
+              when param.is_a?(String)
+                param
+              when param.is_a?(Range)
+                "#{param.first}-#{param.last}"
+              end
+
+        processed << val
+      end
+
+      processed.join(' ')
+    end
+  end
+
 
   class NNTP
     class Date < NNTPRequest
@@ -41,6 +61,11 @@ module Net
     class Group < NNTPRequest
       METHOD = 'GROUP'
       RESPONSES = { 211 => NNTPGroupResponse }
+    end
+
+    class ListGroup < NNTPRequest
+      METHOD = 'LISTGROUP'
+      RESPONSES = { 211 => NNTPListGroupResponse }
     end
 
     class Article < NNTPRequest
@@ -67,7 +92,6 @@ module Net
       METHOD = 'LAST'
       RESPONSES = { 223 => NNTPLastResponse }
     end
-
   end
 
 end

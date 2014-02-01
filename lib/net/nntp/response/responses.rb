@@ -24,6 +24,17 @@ module Net
     include NNTPGroupResponseParser
   end
 
+  class NNTPListGroupResponse < NNTPLongResponse
+    include NNTPGroupResponseParser
+    attr_reader :articles
+
+    def handle_long_response(data)
+      super(data)
+      @articles = @raw_data.split("\r\n")
+      @articles.collect! { |article| article.to_i }
+    end
+  end
+
   class NNTPArticleResponse < NNTPLongResponse
     attr_accessor :data
 
@@ -32,9 +43,15 @@ module Net
     end
 
     def handle_long_response(data)
+      super(data)
       @data = data
     end
   end
+
+  # 281
+  NNTPAuthenticationAccepted = Class.new(NNTPOKResponse)
+  # 381
+  NNTPPasswordRequired = Class.new(NNTPOKResponse)
 
   # 411
   NNTPInvalidNewsgroupError = Class.new(NNTPErrorResponse)
@@ -49,6 +66,9 @@ module Net
 
   NNTP_RESPONSES = {
     #(0..501) => NNTPResponse,
+    281 => NNTPAuthenticationAccepted,
+    381 => NNTPPasswordRequired,
+
     411 => NNTPInvalidNewsgroupError,
     412 => NNTPNoNewsgroupSelectedError,
     420 => NNTPInvalidArticleNumberError,

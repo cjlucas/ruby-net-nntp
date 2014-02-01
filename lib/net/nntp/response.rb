@@ -29,12 +29,14 @@ module Net
   NNTPErrorResponse = Class.new(NNTPResponse)
 
   class NNTPLongResponse < NNTPOKResponse
+    attr_reader :raw_data
+
     def needs_long_response?
       true
     end
 
     def handle_long_response(data)
-      raise NotImplementedError
+      @raw_data = data
     end
   end
 

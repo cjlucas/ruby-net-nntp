@@ -12,13 +12,13 @@ module Net
     end
 
     def login(user, pass)
-      puts request(NNTPRequest.new("AUTHINFO USER #{user.chomp}"))
-      puts request(NNTPRequest.new("AUTHINFO PASS #{pass.chomp}"))
+      request "AUTHINFO USER #{user.chomp}"
+      request "AUTHINFO PASS #{pass.chomp}"
     end
 
     def request(req)
       # use a generic request if a valid request subclass is not specifed
-      req = NNTPRequest.new(req.to_s) unless req.is_a?(NNTPRequest)
+      req = NNTPGenericRequest.new(req.to_s) unless req.is_a?(NNTPRequest)
 
       puts ">>> #{req.raw}"
       @socket.write(req.raw << "\r\n")
@@ -30,7 +30,7 @@ module Net
       resp = req.response_class(resp.code).parse(raw)
 
       if resp.needs_long_response?
-        resp.data = read_long_response
+        resp.handle_long_response(read_long_response)
       end
 
       resp
@@ -38,6 +38,11 @@ module Net
 
     def group(group)
       request Group.new(group.chomp)
+    end
+
+    # NOTE: range is a newer nntp feature and may not be supported
+    def list_group(group = nil, range = nil)
+      request ListGroup.new(group.chomp, range)
     end
 
     def article(param)
@@ -72,6 +77,7 @@ module Net
       resp = ''
       loop do
         buf = @socket.readline
+        #puts buf
         resp << buf
         break if resp[term_bytes_range].bytes == term_bytes
       end
@@ -89,7 +95,7 @@ module Net
     end
 
     def read_greeting
-      GreetingResponse.new(read_short_response)
+      NNTPGreetingResponse.new(read_short_response)
     end
 
   end
