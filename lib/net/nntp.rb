@@ -79,7 +79,11 @@ module Net
         buf = @socket.readline
         #puts buf
         resp << buf
-        break if resp[term_bytes_range].bytes == term_bytes
+
+        # workaround for Ruby 1.9
+        bytes = []
+        resp[term_bytes_range].each_byte { |byte| bytes << byte }
+        break if bytes == term_bytes
       end
 
       resp
