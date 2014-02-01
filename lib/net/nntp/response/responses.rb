@@ -1,8 +1,8 @@
 require 'net/nntp/response/parsers'
 
 module Net
-  QuitResponse      = Class.new(NNTPOKResponse)
-  GreetingResponse  = Class.new(NNTPOKResponse)
+  NNTPQuitResponse      = Class.new(NNTPOKResponse)
+  NNTPGreetingResponse  = Class.new(NNTPOKResponse)
 
   class NNTPStatResponse < NNTPOKResponse
     include NNTPStatResponseParser
@@ -15,15 +15,15 @@ module Net
   class NNTPPrevResponse < NNTPOKResponse
     include NNTPStatResponseParser
   end
-    
+
   class NNTPDateResponse < NNTPOKResponse
     include NNTPDateResponseParser
   end
-    
+
   class NNTPGroupResponse < NNTPOKResponse
     include NNTPGroupResponseParser
   end
-    
+
   class NNTPArticleResponse < NNTPLongResponse
     attr_accessor :data
 
@@ -35,4 +35,8 @@ module Net
       @data = data
     end
   end
+
+  NNTP_RESPONSES = {
+    (0..501) => NNTPResponse,
+  }
 end
