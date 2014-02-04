@@ -92,6 +92,11 @@ module Net
       METHOD = 'LAST'
       RESPONSES = { 223 => NNTPLastResponse }
     end
+
+    class Help < NNTPRequest
+      METHOD = 'HELP'
+      RESPONSES = { 100 => NNTPHelpResponse }
+    end
   end
 
 end

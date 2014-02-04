@@ -61,6 +61,10 @@ module Net
       request Last.new
     end
 
+    def help
+      request Help.new
+    end
+
     def quit
       request Quit.new
     end

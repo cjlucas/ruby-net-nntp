@@ -65,3 +65,10 @@ describe Net::NNTP::Next do
     req.response_class(423).should eq(Net::NNTPNoArticleFoundError)
   end
 end
+
+describe Net::NNTP::Help do
+  it "returns the correct response class" do
+    req = Net::NNTP::Help.new
+    req.response_class(100).should eq(Net::NNTPHelpResponse)
+  end
+end

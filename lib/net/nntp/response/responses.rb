@@ -48,6 +48,8 @@ module Net
     end
   end
 
+  NNTPHelpResponse = Class.new(NNTPLongResponse)
+
   # 281
   NNTPAuthenticationAccepted = Class.new(NNTPOKResponse)
   # 381
