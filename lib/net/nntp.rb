@@ -36,6 +36,10 @@ module Net
       resp
     end
 
+    def date
+      request Date.new
+    end
+
     def group(group)
       request Group.new(group.chomp)
     end
