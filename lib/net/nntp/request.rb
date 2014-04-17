@@ -101,6 +101,11 @@ module Net
       RESPONSES = { 221 => NNTPHeadResponse }
     end
 
+    class Body < NNTPRequest
+      METHOD = 'BODY'
+      RESPOSNES = { 222 => NNTPBodyResponse }
+    end
+
     class Help < NNTPRequest
       METHOD = 'HELP'
       RESPONSES = { 100 => NNTPHelpResponse }

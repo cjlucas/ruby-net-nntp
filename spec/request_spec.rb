@@ -95,3 +95,12 @@ describe Net::NNTP::Head do
     req.raw.should eql('HEAD <6jmg6qF411jrU1@mid.individual.net>')
   end
 end
+
+describe Net::NNTP::Body do
+  it 'returns the correct response class' do
+    req = Net::NNTP::Body.new
+    req.response_class(222).should eq(Net::NNTPBodyResponse)
+    req.response_class(412).should eq(Net::NNTPNoNewsgroupSelectedError)
+    req.response_class(420).should eq(Net::NNTPInvalidArticleNumberError)
+  end
+end

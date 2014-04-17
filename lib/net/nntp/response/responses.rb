@@ -51,10 +51,24 @@ module Net
     end
   end
 
+  class NNTPBodyResponse < NNTPLongResponse
+    include NNTPStatResponseParser
+    attr_reader :body
+
+    def has_long_response?
+      @code == 222
+    end
+
+    def handle_long_response(data)
+        super(data)
+        @body = data
+    end
+  end
+
   class NNTPArticleResponse < NNTPLongResponse
     include NNTPStatResponseParser
     include NNTPHeaderParser
-    attr_accessor :headers, :body
+    attr_reader :headers, :body
 
     def has_long_response?
       @code == 220
