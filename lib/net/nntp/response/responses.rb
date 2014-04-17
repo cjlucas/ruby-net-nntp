@@ -64,6 +64,8 @@ module Net
     end
   end
 
+  NNTPHelpResponse = Class.new(NNTPLongResponse)
+
   # 281
   NNTPAuthenticationAccepted = Class.new(NNTPOKResponse)
   # 381
@@ -82,6 +84,14 @@ module Net
 
   NNTP_RESPONSES = {
     #(0..501) => NNTPResponse,
+    215 => NNTPLongResponse,
+    220 => NNTPLongResponse,
+    221 => NNTPLongResponse,
+    222 => NNTPLongResponse,
+    224 => NNTPLongResponse,
+    225 => NNTPLongResponse,
+    230 => NNTPLongResponse,
+    231 => NNTPLongResponse,
     281 => NNTPAuthenticationAccepted,
     381 => NNTPPasswordRequired,
 

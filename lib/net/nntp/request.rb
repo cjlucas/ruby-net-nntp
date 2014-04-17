@@ -100,6 +100,10 @@ module Net
       METHOD = 'HEAD'
       RESPONSES = { 221 => NNTPHeadResponse }
     end
-  end
 
+    class Help < NNTPRequest
+      METHOD = 'HELP'
+      RESPONSES = { 100 => NNTPHelpResponse }
+    end
+  end
 end

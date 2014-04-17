@@ -66,6 +66,13 @@ describe Net::NNTP::Next do
   end
 end
 
+describe Net::NNTP::Help do
+  it "returns the correct response class" do
+    req = Net::NNTP::Help.new
+    req.response_class(100).should eq(Net::NNTPHelpResponse)
+  end
+end
+
 describe Net::NNTP::Head do
   it "returns the correct response class" do
     req = Net::NNTP::Head.new
