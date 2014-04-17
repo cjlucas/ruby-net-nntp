@@ -15,6 +15,15 @@ describe Net::NNTP::Group do
   end
 end
 
+describe Net::NNTP::ListGroup do
+  it 'returns the correct response class' do
+    req = Net::NNTP::ListGroup.new
+    req.response_class(211).should eq(Net::NNTPListGroupResponse)
+    req.response_class(411).should eq(Net::NNTPInvalidNewsgroupError)
+    req.response_class(412).should eq(Net::NNTPNoNewsgroupSelectedError)
+  end
+end
+
 describe Net::NNTP::Article do
   it 'returns the correct response class' do
     req = Net::NNTP::Article.new

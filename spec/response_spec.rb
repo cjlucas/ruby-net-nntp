@@ -40,6 +40,34 @@ describe Net::NNTPGroupResponse do
   end
 end
 
+describe Net::NNTPListGroupResponse do
+  it 'parses raw responses correctly' do
+    resp = Net::NNTPListGroupResponse.parse('211 70828 256246 327073 comp.lang.ruby')
+    resp.code.should eq(211)
+    resp.low.should eq(256246)
+    resp.high.should eq(327073)
+    resp.num_articles.should eq(70828)
+    resp.group.should eql('comp.lang.ruby')
+    expect(resp.has_long_response?).to be_true
+  end
+
+  it 'parses long response correctly' do
+    resp = Net::NNTPListGroupResponse.parse('211 70828 256246 327073 comp.lang.ruby')
+    long_response = "1\r\n" \
+    + "2\r\n" \
+    + "3\r\n" \
+    + "4\r\n" \
+    + "5\r\n" \
+    + "6\r\n" \
+    + "7\r\n" \
+    + "8\r\n"
+
+    resp.handle_long_response(long_response)
+    resp.articles.size.should eq(8)
+    resp.articles.should eql((1..8).to_a)
+  end
+end
+
 describe Net::NNTPStatResponse do
   it 'parses raw responses correctly' do
     resp = Net::NNTPStatResponse.parse('223 256247 <eca9deb9-3adf-4015-a6f7-f7b0c730f7a6@f63g2000hsf.googlegroups.com>')

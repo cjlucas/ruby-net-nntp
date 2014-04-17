@@ -41,7 +41,7 @@ module Net
     end
 
     def group(group)
-      request Group.new(group.chomp)
+      request Group.new(group)
     end
 
     # NOTE: range is a newer nntp feature and may not be supported
