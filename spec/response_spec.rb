@@ -60,3 +60,27 @@ describe Net::NNTPDateResponse do
     resp.date.second.should eq(9)
   end
 end
+
+describe Net::NNTPHeadResponse do
+  it "parses raw responses correctly" do
+    resp = Net::NNTPHeadResponse.parse('221 256246 <6jmg6qF411jrU1@mid.individual.net>')
+    resp.code.should eq(221)
+    resp.article_num.should eq(256246)
+    resp.message_id.should eql('<6jmg6qF411jrU1@mid.individual.net>')
+  end
+
+  it "parses headers correctly" do
+    headers = {
+      'From'            => 'Chris Lucas <chris@notmyemail.com>',
+      'Newsgroups'      => 'comp.lang.ruby',
+      'Date'            => 'Tue, 28 May 2013 14:11:30 -0700 (PDT)',
+      'User-Agent'      => 'G2/1.0',
+      'Injection-Info'  => 'glegroupsg2000goo.googlegroups.com; posting-host=24.207.73.75; posting-account=TOgF7woAAAApoE80LVC0mIP5si3FWVbt'
+    }
+    raw_headers = ''
+    headers.each_pair { |k, v| raw_headers << "#{k}: #{v}\r\n"}
+    resp = Net::NNTPHeadResponse.parse('221')
+    resp.handle_long_response(raw_headers)
+    resp.headers.should eql(headers)
+  end
+end

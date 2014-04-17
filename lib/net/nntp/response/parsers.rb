@@ -33,4 +33,20 @@ module Net
       @group        = message[PARSE_RE, 4]
     end
   end
+
+  module NNTPHeaderParser
+    HEADER_PARSE_RE = /(.*):\s(.*)/i
+
+    def parse_headers(raw_headers)
+      headers = {}
+      raw_headers.to_s.each_line do |line|
+        line.chomp!
+        k = line[HEADER_PARSE_RE, 1]
+        v = line[HEADER_PARSE_RE, 2]
+        headers[k] = v
+      end
+
+      headers
+    end
+  end
 end

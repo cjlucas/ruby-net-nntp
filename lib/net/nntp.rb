@@ -45,6 +45,10 @@ module Net
       request ListGroup.new(group.chomp, range)
     end
 
+    def head(param)
+      request Head.new
+    end
+
     def article(param)
       request Article.new(param.chomp)
     end
