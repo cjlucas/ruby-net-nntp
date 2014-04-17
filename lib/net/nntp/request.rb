@@ -103,7 +103,7 @@ module Net
 
     class Body < NNTPRequest
       METHOD = 'BODY'
-      RESPOSNES = { 222 => NNTPBodyResponse }
+      RESPONSES = { 222 => NNTPBodyResponse }
     end
 
     class Help < NNTPRequest
