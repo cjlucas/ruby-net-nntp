@@ -31,7 +31,7 @@ module Net
 
   class NNTPRequest < NNTPGenericRequest
     def initialize(*params)
-      raw = self.class::METHOD.clone
+      raw = self.class::METHOD.dup
       processed_params = process_parameters(params)
       raw << " #{processed_params}" unless processed_params.empty?
       super(raw)
