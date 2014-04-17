@@ -42,4 +42,4 @@ module Net
 
 end
 
-require 'net/nntp/response/responses'
+require_relative 'response/responses'

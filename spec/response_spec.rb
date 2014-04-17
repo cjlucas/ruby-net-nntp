@@ -84,3 +84,38 @@ describe Net::NNTPHeadResponse do
     resp.headers.should eql(headers)
   end
 end
+
+describe Net::NNTPArticleResponse do
+  it 'parses raw responses correctly' do
+    resp = Net::NNTPArticleResponse.parse('220 0 <45223423@example.com>')
+    resp.code.should eq(220)
+    resp.article_num.should eq(0)
+    resp.message_id.should eql('<45223423@example.com>')
+    expect(resp.has_long_response?).to be_true
+
+    article = "Path: pathost!demo!whitehouse!not-for-mail\r\n" \
+    + "From: \"Demo User\" <nobody@example.net>\r\n" \
+    + "Newsgroups: misc.test\r\n" \
+    + "Subject: I am just a test article\r\n" \
+    + "Date: 6 Oct 1998 04:38:40 -0500\r\n" \
+    + "Organization: An Example Net, Uncertain, Texas\r\n" \
+    + "Message-ID: <45223423@example.com>\r\n\r\n" \
+    + "This is just a test article.\r\n"
+
+    expected_headers = {
+      'Path' => 'pathost!demo!whitehouse!not-for-mail',
+      'From' => '"Demo User" <nobody@example.net>',
+      'Newsgroups' => 'misc.test',
+      'Subject' => 'I am just a test article',
+      'Date' => '6 Oct 1998 04:38:40 -0500',
+      'Organization' => 'An Example Net, Uncertain, Texas',
+      'Message-ID' => '<45223423@example.com>'
+    }
+
+    expected_body = "This is just a test article.\r\n"
+
+    resp.handle_long_response(article)
+    resp.headers.should eql(expected_headers)
+    resp.body.should eql(expected_body)
+  end
+end

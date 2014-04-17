@@ -1,4 +1,4 @@
-require 'net/nntp/response/parsers'
+require_relative 'parsers'
 
 module Net
   NNTPQuitResponse      = Class.new(NNTPOKResponse)
@@ -52,15 +52,19 @@ module Net
   end
 
   class NNTPArticleResponse < NNTPLongResponse
-    attr_accessor :data
+    include NNTPStatResponseParser
+    include NNTPHeaderParser
+    attr_accessor :headers, :body
 
     def has_long_response?
-      (200..299).include?(@code)
+      @code == 220
     end
 
     def handle_long_response(data)
       super(data)
-      @data = data
+      split = data.index("\r\n\r\n")
+      @headers = parse_headers(data[(0..split+1)])
+      @body = data[(split+4..-1)]
     end
   end
 
