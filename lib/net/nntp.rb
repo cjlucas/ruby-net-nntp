@@ -29,7 +29,7 @@ module Net
 
       resp = req.response_class(resp.code).parse(raw)
 
-      if resp.needs_long_response?
+      if resp.has_long_response?
         resp.handle_long_response(read_long_response)
       end
 

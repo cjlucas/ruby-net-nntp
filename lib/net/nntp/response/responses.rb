@@ -41,7 +41,7 @@ module Net
 
     attr_reader :headers
 
-    def needs_long_response?
+    def has_long_response?
       @code == 221
     end
 
@@ -54,7 +54,7 @@ module Net
   class NNTPArticleResponse < NNTPLongResponse
     attr_accessor :data
 
-    def needs_long_response?
+    def has_long_response?
       (200..299).include?(@code)
     end
 
