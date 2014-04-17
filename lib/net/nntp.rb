@@ -45,8 +45,8 @@ module Net
       request ListGroup.new(group.chomp, range)
     end
 
-    def head(param)
-      request Head.new
+    def head(param = nil)
+      request Head.new(param)
     end
 
     def article(param)
