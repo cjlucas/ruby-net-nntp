@@ -29,7 +29,7 @@ module Net
 
       resp = req.response_class(resp.code).parse(raw)
 
-      if resp.needs_long_response?
+      if resp.has_long_response?
         resp.handle_long_response(read_long_response)
       end
 
@@ -47,6 +47,10 @@ module Net
     # NOTE: range is a newer nntp feature and may not be supported
     def list_group(group = nil, range = nil)
       request ListGroup.new(group.chomp, range)
+    end
+
+    def head(param = nil)
+      request Head.new(param)
     end
 
     def article(param)

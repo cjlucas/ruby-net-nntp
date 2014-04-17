@@ -31,20 +31,23 @@ module Net
 
   class NNTPRequest < NNTPGenericRequest
     def initialize(*params)
-      super("#{self.class::METHOD} #{process_parameters(params)}")
+      raw = self.class::METHOD.dup
+      processed_params = process_parameters(params)
+      raw << " #{processed_params}" unless processed_params.empty?
+      super(raw)
     end
 
     def process_parameters(params)
       processed = []
       params.each do |param|
-        val = case
-              when param.is_a?(String)
-                param
-              when param.is_a?(Range)
-                "#{param.first}-#{param.last}"
-              end
+        next if param.nil?
 
-        processed << val
+        processed << case
+                     when param.is_a?(Range)
+                       "#{param.first}-#{param.last}"
+                     else
+                       param.to_s
+                     end
       end
 
       processed.join(' ')
@@ -93,10 +96,19 @@ module Net
       RESPONSES = { 223 => NNTPLastResponse }
     end
 
+    class Head < NNTPRequest
+      METHOD = 'HEAD'
+      RESPONSES = { 221 => NNTPHeadResponse }
+    end
+
+    class Body < NNTPRequest
+      METHOD = 'BODY'
+      RESPOSNES = { 222 => NNTPBodyResponse }
+    end
+
     class Help < NNTPRequest
       METHOD = 'HELP'
       RESPONSES = { 100 => NNTPHelpResponse }
     end
   end
-
 end

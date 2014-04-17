@@ -16,7 +16,7 @@ module Net
       @message  = @raw[PARSE_RE, 2]
     end
 
-    def needs_long_response?
+    def has_long_response?
       false
     end
 
@@ -31,7 +31,7 @@ module Net
   class NNTPLongResponse < NNTPOKResponse
     attr_reader :raw_data
 
-    def needs_long_response?
+    def has_long_response?
       true
     end
 
@@ -42,4 +42,4 @@ module Net
 
 end
 
-require 'net/nntp/response/responses'
+require_relative 'response/responses'
