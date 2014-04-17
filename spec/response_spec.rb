@@ -1,7 +1,7 @@
 require_relative 'spec_helper'
 
 describe Net::NNTPResponse do
-  it "parses raw responses correctly" do
+  it 'parses raw responses correctly' do
     cases = [
       {
         raw:      '200 Ok',
@@ -30,7 +30,7 @@ describe Net::NNTPResponse do
 end
 
 describe Net::NNTPGroupResponse do
-  it "parses raw responses correctly" do
+  it 'parses raw responses correctly' do
     resp = Net::NNTPGroupResponse.parse('211 70828 256246 327073 comp.lang.ruby')
     resp.code.should eq(211)
     resp.low.should eq(256246)
@@ -41,7 +41,7 @@ describe Net::NNTPGroupResponse do
 end
 
 describe Net::NNTPStatResponse do
-  it "parses raw responses correctly" do
+  it 'parses raw responses correctly' do
     resp = Net::NNTPStatResponse.parse('223 256247 <eca9deb9-3adf-4015-a6f7-f7b0c730f7a6@f63g2000hsf.googlegroups.com>')
     resp.code.should eq(223)
     resp.article_num.should eq(256247)
@@ -50,7 +50,7 @@ describe Net::NNTPStatResponse do
 end
 
 describe Net::NNTPDateResponse do
-  it "parses raw responses correctly" do
+  it 'parses raw responses correctly' do
     resp = Net::NNTPDateResponse.parse('111 20140128175609')
     resp.date.year.should   eq(2014)
     resp.date.month.should  eq(1)
@@ -62,14 +62,14 @@ describe Net::NNTPDateResponse do
 end
 
 describe Net::NNTPHeadResponse do
-  it "parses raw responses correctly" do
+  it 'parses raw responses correctly' do
     resp = Net::NNTPHeadResponse.parse('221 256246 <6jmg6qF411jrU1@mid.individual.net>')
     resp.code.should eq(221)
     resp.article_num.should eq(256246)
     resp.message_id.should eql('<6jmg6qF411jrU1@mid.individual.net>')
   end
 
-  it "parses headers correctly" do
+  it 'parses headers correctly' do
     headers = {
       'From'            => 'Chris Lucas <chris@notmyemail.com>',
       'Newsgroups'      => 'comp.lang.ruby',
