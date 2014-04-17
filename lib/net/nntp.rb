@@ -46,19 +46,23 @@ module Net
 
     # NOTE: range is a newer nntp feature and may not be supported
     def list_group(group = nil, range = nil)
-      request ListGroup.new(group.chomp, range)
+      request ListGroup.new(group, range)
     end
 
     def head(param = nil)
       request Head.new(param)
     end
 
-    def article(param)
-      request Article.new(param.chomp)
+    def body(param = nil)
+      request Body.new(param)
     end
 
-    def stat(param)
-      request Stat.new(param.chomp)
+    def article(param = nil)
+      request Article.new(param)
+    end
+
+    def stat(param = nil)
+      request Stat.new(param)
     end
 
     def next
