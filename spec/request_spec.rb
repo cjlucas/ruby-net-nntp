@@ -113,3 +113,14 @@ describe Net::NNTP::Body do
     req.response_class(420).should eq(Net::NNTPInvalidArticleNumberError)
   end
 end
+
+describe Net::NNTP::Post do
+  it 'returns the correct response class' do
+    req = Net::NNTP::Post.new
+    req.response_class(340).should eq(Net::NNTPSendArticle)
+    req.response_class(440).should eq(Net::NNTPPostingNotPermittedError)
+
+    req.response_class(240).should eq(Net::NNTPArticleReceived)
+    req.response_class(441).should eq(Net::NNTPPostingFailedError)
+  end
+end

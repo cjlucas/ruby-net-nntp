@@ -21,20 +21,8 @@ module Net
       # use a generic request if a valid request subclass is not specifed
       req = NNTPGenericRequest.new(req.to_s) unless req.is_a?(NNTPRequest)
 
-      puts ">>> #{req.raw}"
-      @socket.write(req.raw << "\r\n")
-
-      raw = read_short_response
-      resp = NNTPResponse.parse(raw)
-      puts "<<< #{resp.raw}"
-
-      resp = req.response_class(resp.code).parse(raw)
-
-      if resp.has_long_response?
-        resp.handle_long_response(read_long_response)
-      end
-
-      resp
+      write_short(req.raw)
+      read_response(req)
     end
 
     def date
@@ -78,6 +66,17 @@ module Net
       request Help.new
     end
 
+    def post(&block)
+      resp = request Post.new
+      return resp if resp.is_a?(Net::NNTPErrorResponse)
+
+      article = NNTPArticle.new
+      block.call(resp, article)
+
+      write_long(article.to_s)
+      read_response(Post.new)
+    end
+
     def quit
       request Quit.new
     end
@@ -106,6 +105,29 @@ module Net
       resp
     end
 
+    def write_short(data)
+      puts ">>> #{data}"
+      @socket.write(data << "\r\n")
+    end
+
+    def write_long(data)
+      @socket.write(data << ".\r\n")
+    end
+
+    def read_response(req)
+      raw = read_short_response
+      resp = NNTPResponse.parse(raw)
+      puts "<<< #{resp.raw}"
+
+      resp = req.response_class(resp.code).parse(raw)
+
+      if resp.has_long_response?
+        resp.handle_long_response(read_long_response)
+      end
+
+      resp
+    end
+
     def read_short_response
       read_raw_response([0x0d, 0x0a])
     end
@@ -118,6 +140,5 @@ module Net
     def read_greeting
       NNTPGreetingResponse.new(read_short_response)
     end
-
   end
 end

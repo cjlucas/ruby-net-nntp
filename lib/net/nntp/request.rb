@@ -106,6 +106,16 @@ module Net
       RESPONSES = { 222 => NNTPBodyResponse }
     end
 
+    class Post < NNTPRequest
+      METHOD = 'POST'
+      RESPONSES = {
+          240 => NNTPArticleReceived,
+          340 => NNTPSendArticle,
+          440 => NNTPPostingNotPermittedError,
+          441 => NNTPPostingFailedError
+      }
+    end
+
     class Help < NNTPRequest
       METHOD = 'HELP'
       RESPONSES = { 100 => NNTPHelpResponse }

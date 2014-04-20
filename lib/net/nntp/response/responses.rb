@@ -82,8 +82,12 @@ module Net
 
   NNTPHelpResponse = Class.new(NNTPLongResponse)
 
+  # 240
+  NNTPArticleReceived = Class.new(NNTPOKResponse)
   # 281
   NNTPAuthenticationAccepted = Class.new(NNTPOKResponse)
+  # 324
+  NNTPSendArticle = Class.new(NNTPOKResponse)
   # 381
   NNTPPasswordRequired = Class.new(NNTPOKResponse)
 
@@ -95,8 +99,13 @@ module Net
   NNTPInvalidArticleNumberError = Class.new(NNTPErrorResponse)
   # 421, 422, 423, 430
   NNTPNoArticleFoundError = Class.new(NNTPErrorResponse)
+  # 440
+  NNTPPostingNotPermittedError = Class.new(NNTPErrorResponse)
+  # 441
+  NNTPPostingFailedError = Class.new(NNTPErrorResponse)
 
-
+  # 502
+  NNTPServicePermenentlyUnavailableError = Class.new(NNTPErrorResponse)
 
   NNTP_RESPONSES = {
     #(0..501) => NNTPResponse,
@@ -118,5 +127,7 @@ module Net
     422 => NNTPNoArticleFoundError,
     423 => NNTPNoArticleFoundError,
     430 => NNTPNoArticleFoundError,
+
+    502 => NNTPServicePermenentlyUnavailableError,
   }
 end
