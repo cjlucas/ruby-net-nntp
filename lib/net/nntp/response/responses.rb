@@ -68,7 +68,7 @@ module Net
   class NNTPArticleResponse < NNTPLongResponse
     include NNTPStatResponseParser
     include NNTPHeaderParser
-    attr_reader :headers, :body
+    attr_reader :article
 
     def has_long_response?
       @code == 220
@@ -76,9 +76,7 @@ module Net
 
     def handle_long_response(data)
       super(data)
-      split = data.index("\r\n\r\n")
-      @headers = parse_headers(data[(0..split+1)])
-      @body = data[(split+4..-1)]
+      @article = Net::NNTPArticle.parse(data)
     end
   end
 

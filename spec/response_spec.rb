@@ -143,7 +143,7 @@ describe Net::NNTPArticleResponse do
     + "Organization: An Example Net, Uncertain, Texas\r\n" \
     + "Message-ID: <45223423@example.com>\r\n\r\n" \
     + "This is just a test article.\r\n" \
-    + "With multiple lines.\r\n"
+    + "With multiple lines.\r\n\r\n"
 
     expected_headers = {
       'Path' => 'pathost!demo!whitehouse!not-for-mail',
@@ -158,7 +158,7 @@ describe Net::NNTPArticleResponse do
     expected_body = "This is just a test article.\r\nWith multiple lines.\r\n"
 
     resp.handle_long_response(article)
-    resp.headers.should eql(expected_headers)
-    resp.body.should eql(expected_body)
+    resp.article.headers.should eql(expected_headers)
+    resp.article.body.should eql(expected_body)
   end
 end

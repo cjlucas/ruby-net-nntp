@@ -49,4 +49,16 @@ module Net
       headers
     end
   end
+
+  module NNTPBodyParser
+    def parse_body(raw_body)
+      body = ''
+      raw_body.each_line do |line|
+        range = line[0] == '.' ? 1..-1 : 0..-1
+        body << line[range]
+      end
+
+      body.chomp! # chomp trailing \r\n
+    end
+  end
 end
