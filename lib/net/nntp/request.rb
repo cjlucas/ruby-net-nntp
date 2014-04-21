@@ -64,7 +64,7 @@ module Net
   end
 
 
-  class NNTP
+  module NNTP
     class Date < NNTPRequest
       METHOD = 'DATE'
       RESPONSES = { 111 => NNTPDateResponse }
