@@ -2,13 +2,12 @@ module Net
   class NNTPResponse
     PARSE_RE = /^(\d{3})\s*(.*)/
 
-    # @todo change these to attr_reader
     # @return [String] the raw response
-    attr_accessor :raw
+    attr_reader :raw
     # @return [Integer] the response code
-    attr_accessor :code
+    attr_reader :code
     # @return [String] the response message
-    attr_accessor :message
+    attr_reader :message
 
     def self.parse(raw)
       new(raw).tap { |resp| resp.parse }
