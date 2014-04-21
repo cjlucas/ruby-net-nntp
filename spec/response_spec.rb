@@ -123,7 +123,7 @@ describe Net::NNTPBodyResponse do
 
     body = "This is just a test article.\r\nWith multiple lines.\r\n"
     resp.handle_long_response(body)
-    resp.body.should eql(body)
+    resp.body.should eql("This is just a test article.\r\nWith multiple lines.")
   end
 end
 
