@@ -91,26 +91,28 @@ module Net
   NNTPHelpResponse = Class.new(NNTPLongResponse)
 
   # 240
-  NNTPArticleReceived = Class.new(NNTPOKResponse)
+  NNTPArticleReceived         = Class.new(NNTPOKResponse)
   # 281
-  NNTPAuthenticationAccepted = Class.new(NNTPOKResponse)
+  NNTPAuthenticationAccepted  = Class.new(NNTPOKResponse)
   # 324
-  NNTPSendArticle = Class.new(NNTPOKResponse)
+  NNTPSendArticle             = Class.new(NNTPOKResponse)
   # 381
-  NNTPPasswordRequired = Class.new(NNTPOKResponse)
+  NNTPPasswordRequired        = Class.new(NNTPOKResponse)
 
+  # 400
+  NNTPServiceTemporarilyUnavailableError  = Class.new(NNTPErrorResponse)
   # 411
-  NNTPInvalidNewsgroupError = Class.new(NNTPErrorResponse)
+  NNTPInvalidNewsgroupError               = Class.new(NNTPErrorResponse)
   # 412
-  NNTPNoNewsgroupSelectedError = Class.new(NNTPErrorResponse)
+  NNTPNoNewsgroupSelectedError            = Class.new(NNTPErrorResponse)
   # 420
-  NNTPInvalidArticleNumberError = Class.new(NNTPErrorResponse)
+  NNTPInvalidArticleNumberError           = Class.new(NNTPErrorResponse)
   # 421, 422, 423, 430
-  NNTPNoArticleFoundError = Class.new(NNTPErrorResponse)
+  NNTPNoArticleFoundError                 = Class.new(NNTPErrorResponse)
   # 440
-  NNTPPostingNotPermittedError = Class.new(NNTPErrorResponse)
+  NNTPPostingNotPermittedError            = Class.new(NNTPErrorResponse)
   # 441
-  NNTPPostingFailedError = Class.new(NNTPErrorResponse)
+  NNTPPostingFailedError                  = Class.new(NNTPErrorResponse)
 
   # 502
   NNTPServicePermenentlyUnavailableError = Class.new(NNTPErrorResponse)
@@ -128,6 +130,7 @@ module Net
     281 => NNTPAuthenticationAccepted,
     381 => NNTPPasswordRequired,
 
+    400 => NNTPServiceTemporarilyUnavailableError,
     411 => NNTPInvalidNewsgroupError,
     412 => NNTPNoNewsgroupSelectedError,
     420 => NNTPInvalidArticleNumberError,
