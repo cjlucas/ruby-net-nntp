@@ -53,6 +53,7 @@ module Net
 
   class NNTPBodyResponse < NNTPLongResponse
     include NNTPStatResponseParser
+    include NNTPBodyParser
     attr_reader :body
 
     def has_long_response?
