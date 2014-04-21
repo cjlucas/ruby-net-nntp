@@ -66,12 +66,14 @@ module Net
       request Help.new
     end
 
-    def post(&block)
+    def post(article = nil, &block)
       resp = request Post.new
       return resp if resp.is_a?(Net::NNTPErrorResponse)
 
-      article = NNTPArticle.new
-      block.call(resp, article)
+      if block_given?
+        article = NNTPArticle.new
+        block.call(resp, article)
+      end
 
       write_long(article.to_s)
       read_response(Post.new)
