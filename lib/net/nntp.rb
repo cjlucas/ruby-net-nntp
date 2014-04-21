@@ -33,7 +33,7 @@ module Net
       request Group.new(group)
     end
 
-    # NOTE: range is a newer nntp feature and may not be supported
+    # @note range is a newer nntp feature and may not be supported
     def list_group(group = nil, range = nil)
       request ListGroup.new(group, range)
     end
@@ -46,6 +46,17 @@ module Net
       request Body.new(param)
     end
 
+    # Select an article
+    #
+    # @note If param is nil, the current article will be selected
+    # @param param the article number or message id
+    #
+    # @return [NNTPResponse] Possible responses:
+    #   {NNTPArticleResponse},
+    #   {NNTPNoNewsgroupSelectedError},
+    #   {NNTPInvalidArticleNumberError},
+    #   {NNTPNoArticleFoundError}
+    #
     def article(param = nil)
       request Article.new(param)
     end
@@ -66,6 +77,26 @@ module Net
       request Help.new
     end
 
+    # Post an article.
+    #
+    # This method can be used in one of two ways, by directly supplying
+    # and article to be posted via the method parameter, or by using the
+    # block interface. The block interface is intented to be used
+    # if the user has interest in the first stage POST response. Also note
+    # that if the first POST response is a {NNTPErrorResponse}, the block
+    # will not be executed and the first response will be returned.
+    #
+    # @param [NNTPArticle] article the article to be posted
+    #
+    # @yield [response, article] the (optional) block interface
+    # @yieldparam [NNTPOKResponse] response the first stage response
+    # @yieldparam [NNTPArticle] article the article to be posted
+    #
+    # @return [NNTPResponse] Possible responses:
+    #   {NNTPPostingNotPermittedError},
+    #   {NNTPArticleReceived},
+    #   {NNTPPostingFailedError}
+    #
     def post(article = nil, &block)
       resp = request Post.new
       return resp if resp.is_a?(Net::NNTPErrorResponse)

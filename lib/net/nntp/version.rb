@@ -1,5 +1,5 @@
 module Net
-  module NNTP
+  class NNTP
     class Version
       MAJOR = 0
       MINOR = 0

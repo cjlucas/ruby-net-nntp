@@ -1,7 +1,14 @@
 module Net
   class NNTPResponse
     PARSE_RE = /^(\d{3})\s*(.*)/
-    attr_accessor :raw, :code, :message
+
+    # @todo change these to attr_reader
+    # @return [String] the raw response
+    attr_accessor :raw
+    # @return [Integer] the response code
+    attr_accessor :code
+    # @return [String] the response message
+    attr_accessor :message
 
     def self.parse(raw)
       new(raw).tap { |resp| resp.parse }
@@ -29,6 +36,7 @@ module Net
   NNTPErrorResponse = Class.new(NNTPResponse)
 
   class NNTPLongResponse < NNTPOKResponse
+    # @return [String] the raw multi-block data
     attr_reader :raw_data
 
     def has_long_response?

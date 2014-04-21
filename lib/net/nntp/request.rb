@@ -3,6 +3,8 @@ require_relative 'response'
 module Net
   class NNTPGenericRequest
     RESPONSES = ::Net::NNTP_RESPONSES
+
+    # @return [String] the raw request
     attr_reader :raw
 
     def initialize(raw)

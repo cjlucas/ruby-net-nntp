@@ -4,7 +4,11 @@ module Net
   class NNTPArticle
     extend NNTPHeaderParser
     extend NNTPBodyParser
-    attr_accessor :headers, :body
+
+    # @return [Hash] the parsed key-value article headers
+    attr_accessor :headers
+    # @return [String] the parsed article body
+    attr_accessor :body
 
     def self.parse(raw_article)
       split = raw_article.index("\r\n\r\n")

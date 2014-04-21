@@ -26,6 +26,8 @@ module Net
 
   class NNTPListGroupResponse < NNTPLongResponse
     include NNTPGroupResponseParser
+
+    # @return [Array<Integer>] an array of article numbers
     attr_reader :articles
 
     def handle_long_response(data)
@@ -39,6 +41,7 @@ module Net
     include NNTPStatResponseParser
     include NNTPHeaderParser
 
+    # @return [Hash] the parsed key-value headers
     attr_reader :headers
 
     def has_long_response?
@@ -54,6 +57,8 @@ module Net
   class NNTPBodyResponse < NNTPLongResponse
     include NNTPStatResponseParser
     include NNTPBodyParser
+
+    # @return [String] the selected body
     attr_reader :body
 
     def has_long_response?
@@ -62,13 +67,15 @@ module Net
 
     def handle_long_response(data)
         super(data)
-        @body = data
+        @body = parse_body(data)
     end
   end
 
   class NNTPArticleResponse < NNTPLongResponse
     include NNTPStatResponseParser
     include NNTPHeaderParser
+
+    # @return [NNTPArticle] the selected article
     attr_reader :article
 
     def has_long_response?

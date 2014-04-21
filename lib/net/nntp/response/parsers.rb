@@ -3,7 +3,11 @@ require 'date'
 module Net
   module NNTPStatResponseParser
     PARSE_RE = /(\d*)\s(.*)/i
-    attr_reader :article_num, :message_id
+
+    # @return [Integer] the number of the article within the group
+    attr_reader :article_num
+    # @return [String] the message id for the article
+    attr_reader :message_id
 
     def parse
       super
@@ -13,6 +17,7 @@ module Net
   end
 
   module NNTPDateResponseParser
+    # @return [DateTime] the current server time
     attr_reader :date
 
     def parse
@@ -23,7 +28,15 @@ module Net
 
   module NNTPGroupResponseParser
     PARSE_RE = /(\d*)\s*(\d*)\s(\d*)\s(\w.*)/i
-    attr_reader :group, :num_articles, :low, :high
+
+    # @return [String] the name of the newsgroup
+    attr_reader :group
+    # @return [Integer] the number of articles in the group
+    attr_reader :num_articles
+    # @return [Integer] the low water mark
+    attr_reader :low
+    # @return [Integer] the high water mark
+    attr_reader :high
 
     def parse
       super
