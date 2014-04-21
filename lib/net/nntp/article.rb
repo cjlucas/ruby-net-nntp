@@ -23,10 +23,17 @@ module Net
       @headers = {}
     end
 
+    # Add an entry to {#headers}
+    #
+    # @note this is equivalent Hash#[]=
+    # @return [void]
     def add_header(key, value)
       headers[key] = value
     end
 
+    # Generate an NNTP article
+    #
+    # @return [String] the raw NNTP article
     def to_s
       raw = ''
       headers.each_pair { |k, v| raw << "#{k}: #{v}\r\n"}
