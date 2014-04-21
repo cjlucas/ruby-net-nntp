@@ -1,5 +1,32 @@
 require_relative 'spec_helper'
 
+describe Net::NNTPRequest do
+  it 'generates the correct raw request' do
+    req = Net::NNTP::Head.new
+    req.raw.should eql('HEAD')
+
+    req = Net::NNTP::Head.new(nil)
+    req.raw.should eql('HEAD')
+
+    req = Net::NNTP::Head.new(5)
+    req.raw.should eql('HEAD 5')
+
+    req = Net::NNTP::Head.new('<6jmg6qF411jrU1@mid.individual.net>')
+    req.raw.should eql('HEAD <6jmg6qF411jrU1@mid.individual.net>')
+
+    req = Net::NNTP::ListGroup.new('misc.test', '3000238-3000248')
+    req.raw.should eql('LISTGROUP misc.test 3000238-3000248')
+
+    req = Net::NNTP::ListGroup.new('misc.test', 3000238..3000248)
+    req.raw.should eql('LISTGROUP misc.test 3000238-3000248')
+
+    req = Net::NNTP::ListGroup.new('misc.test', 3000238...3000248)
+    req.raw.should eql('LISTGROUP misc.test 3000238-3000247')
+
+    req = Net::NNTP::ListGroup.new('misc.test', 3000238..-1)
+    req.raw.should eql('LISTGROUP misc.test 3000238-')
+  end
+end
 describe Net::NNTP::Date do
   it 'returns the correct response class' do
     req = Net::NNTP::Date.new
@@ -88,20 +115,6 @@ describe Net::NNTP::Head do
     req.response_class(221).should eq(Net::NNTPHeadResponse)
     req.response_class(412).should eq(Net::NNTPNoNewsgroupSelectedError)
     req.response_class(420).should eq(Net::NNTPInvalidArticleNumberError)
-  end
-
-  it 'generates the correct raw request' do
-    req = Net::NNTP::Head.new
-    req.raw.should eql('HEAD')
-
-    req = Net::NNTP::Head.new(nil)
-    req.raw.should eql('HEAD')
-
-    req = Net::NNTP::Head.new(5)
-    req.raw.should eql('HEAD 5')
-
-    req = Net::NNTP::Head.new('<6jmg6qF411jrU1@mid.individual.net>')
-    req.raw.should eql('HEAD <6jmg6qF411jrU1@mid.individual.net>')
   end
 end
 

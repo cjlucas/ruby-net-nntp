@@ -44,13 +44,20 @@ module Net
 
         processed << case
                      when param.is_a?(Range)
-                       "#{param.first}-#{param.last}"
+                       process_range(param)
                      else
                        param.to_s
                      end
       end
 
       processed.join(' ')
+    end
+
+    private
+
+    def process_range(range)
+      range = range.begin..range.end-1 if range.exclude_end?
+      range.end == -1 ? "#{range.begin}-" : "#{range.begin}-#{range.end}"
     end
   end
 
