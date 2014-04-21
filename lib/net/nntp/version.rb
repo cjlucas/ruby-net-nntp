@@ -1,5 +1,5 @@
 module Net
-  class NNTP
+  class NNTPClient
     class Version
       MAJOR = 0
       MINOR = 0
