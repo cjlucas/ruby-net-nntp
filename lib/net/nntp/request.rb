@@ -118,10 +118,30 @@ module Net
     class Post < NNTPRequest
       METHOD = 'POST'
       RESPONSES = {
-          240 => NNTPArticleReceived,
-          340 => NNTPSendArticle,
-          440 => NNTPPostingNotPermittedError,
-          441 => NNTPPostingFailedError
+        # first stage
+        340 => NNTPSendArticle,
+        440 => NNTPPostingNotPermittedError,
+        # second stage
+        240 => NNTPArticleReceived,
+        441 => NNTPPostingFailedError
+      }
+    end
+
+    class IHaveFirstStage < NNTPRequest
+      METHOD = 'IHAVE'
+      RESPONSES = {
+        335 => NNTPSendArticle,
+        435 => NNTPArticleNotWantedError,
+        436 => NNTPTransferNotPossibleError,
+      }
+    end
+
+    class IHaveSecondStage < NNTPRequest
+      METHOD = 'IHAVE'
+      RESPONSES = {
+        235 => NNTPArticleReceived,
+        436 => NNTPTransferFailedError,
+        437 => NNTPTransferRejectedError
       }
     end
 

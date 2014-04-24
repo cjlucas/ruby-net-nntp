@@ -90,7 +90,7 @@ module Net
 
   NNTPHelpResponse = Class.new(NNTPLongResponse)
 
-  # 240
+  # 235, 240
   NNTPArticleReceived         = Class.new(NNTPOKResponse)
   # 281
   NNTPAuthenticationAccepted  = Class.new(NNTPOKResponse)
@@ -109,6 +109,14 @@ module Net
   NNTPInvalidArticleNumberError           = Class.new(NNTPErrorResponse)
   # 421, 422, 423, 430
   NNTPNoArticleFoundError                 = Class.new(NNTPErrorResponse)
+  # 435
+  NNTPArticleNotWantedError               = Class.new(NNTPErrorResponse)
+  # 436
+  NNTPTransferFailedError                 = Class.new(NNTPErrorResponse)
+  # 436
+  NNTPTransferNotPossibleError            = Class.new(NNTPErrorResponse)
+  # 437
+  NNTPTransferRejectedError               = Class.new(NNTPErrorResponse)
   # 440
   NNTPPostingNotPermittedError            = Class.new(NNTPErrorResponse)
   # 441

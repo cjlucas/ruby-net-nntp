@@ -104,6 +104,41 @@ module Net
       read_response(Post.new)
     end
 
+    # Notify the server that an article is available to be sent.
+    #
+    # This method can be used in one of two ways. Either by supplying
+    # the article via the method parameter, or by using the block interface.
+    # The block interface is intended to be used if the first first stage
+    # IHAVE response is needed. Also note that if the first IHAVE response
+    # is a {NNTPErrorResponse}, the block will not be executed and the first
+    # response will be returned.
+    #
+    # @param [String] message_id the message-id of the article
+    # @param [NNTPArticle] article the article to be posted
+    #
+    # @yield [response, article] the (optional block interface)
+    # @yieldparam [NNTPOKResponse] response the first stage response
+    # @yieldparam [NNTPArticle] article the article to be posted
+    #
+    # @return [NNTPResponse] Possible responses:
+    #   {NNTPArticleReceived},
+    #   {NNTPArticleNotWantedError},
+    #   {NNTPTransferNotPossibleError},
+    #   {NNTPTransferFailedError},
+    #   {NNTPTransferRejectedError}
+    def ihave(message_id, article = nil, &block)
+      resp = request IHaveFirstStage.new(message_id)
+      return resp if resp.is_a?(Net::NNTPErrorResponse)
+
+      if block_given?
+        article = NNTPArticle.new
+        block.call(resp, article)
+      end
+
+      write_long(article)
+      read_response(IHaveSecondStage.new)
+    end
+
     def quit
       request Quit.new
     end

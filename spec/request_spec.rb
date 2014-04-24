@@ -137,3 +137,21 @@ describe Net::NNTP::Post do
     req.response_class(441).should eq(Net::NNTPPostingFailedError)
   end
 end
+
+describe Net::NNTP::IHaveFirstStage do
+  it 'returns the correct response class' do
+    req = Net::NNTP::IHaveFirstStage.new
+    req.response_class(335).should eq(Net::NNTPSendArticle)
+    req.response_class(435).should eq(Net::NNTPArticleNotWantedError)
+    req.response_class(436).should eq(Net::NNTPTransferNotPossibleError)
+  end
+end
+
+describe Net::NNTP::IHaveSecondStage do
+  it 'returns the correct response class' do
+    req = Net::NNTP::IHaveSecondStage.new
+    req.response_class(235).should eq(Net::NNTPArticleReceived)
+    req.response_class(436).should eq(Net::NNTPTransferFailedError)
+    req.response_class(437).should eq(Net::NNTPTransferRejectedError)
+  end
+end
