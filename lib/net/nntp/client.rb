@@ -230,11 +230,11 @@ module Net
       request Quit.new
     end
 
+    private
+
     def close
       @socket.close
     end
-
-    private
 
     def read_raw_response(term_bytes)
       term_bytes_range = (-term_bytes.size..-1)
