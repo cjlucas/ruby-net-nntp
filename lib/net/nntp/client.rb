@@ -19,23 +19,71 @@ module Net
       read_response(req)
     end
 
+    # Get the current time.
+    #
+    # @return [NNTPDateResponse]
+    #
     def date
       request Date.new
     end
 
+    # Select a group.
+    #
+    # @param [String] group the group to be selected
+    #
+    # @return [NNTPResponse] Possible responses:
+    #   {NNTPGroupResponse}, {NNTPInvalidNewsgroupError}
+    #
     def group(group)
       request Group.new(group)
     end
 
-    # @note range is a newer nntp feature and may not be supported
+    # List the articles of a group
+    #
+    # @param [String] group the group to be selected.
+    #   If nil, the currently selected group is used.
+    # @param [Range] range the range of articles to select.
+    #   If nil, all articles are selected.
+    #
+    # @return [NNTPResponse] Possible responses:
+    #   {NNTPListGroupResponse},
+    #   {NNTPInvalidNewsgroupError},
+    #   {NNTPNoNewsgroupSelectedError}
+    #
+    # @note range is a newer NNTP feature and may not be supported
+    #
     def list_group(group = nil, range = nil)
       request ListGroup.new(group, range)
     end
 
+    # Get the head of an article.
+    #
+    # @param [Object] param Can be either the article number of the
+    #   currently selected group, or a message-id. If nil, the latest
+    #   article is chosen.
+    #
+    # @return [NNTPResponse] Possible resposnes:
+    #   {NNTPHeadResponse},
+    #   {NNTPNoNewsgroupSelectedError},
+    #   {NNTPInvalidArticleNumberError},
+    #   {NNTPNoArticleFoundError}
+    #
     def head(param = nil)
       request Head.new(param)
     end
 
+    # Get the body of an article.
+    #
+    # @param [Object] param Can be either the article number of the
+    #   currently selected group, or a message-id. If nil, the latest
+    #   article is chosen.
+    #
+    # @return [NNTPResponse] Possible resposnes:
+    #   {NNTPBodyResponse},
+    #   {NNTPNoNewsgroupSelectedError},
+    #   {NNTPInvalidArticleNumberError},
+    #   {NNTPNoArticleFoundError}
+    #
     def body(param = nil)
       request Body.new(param)
     end
@@ -55,18 +103,50 @@ module Net
       request Article.new(param)
     end
 
+    # Get the stat line for an article.
+    #
+    # @param [Object] param Can be either the article number of the
+    #   currently selected group, or a message-id. If nil, the latest
+    #   article is chosen.
+    #
+    # @return [NNTPResponse] Possible responses:
+    #   {NNTPStatResponse},
+    #   {NNTPNoNewsgroupSelectedError},
+    #   {NNTPInvalidArticleNumberError},
+    #   {NNTPNoArticleFoundError}
+    #
     def stat(param = nil)
       request Stat.new(param)
     end
 
+    # Get the stat line for the next article.
+    #
+    # @return [NNTPResponse] Possible responses:
+    #   {NNTPNextResponse},
+    #   {NNTPNoNewsgroupSelectedError},
+    #   {NNTPInvalidArticleNumberError},
+    #   {NNTPNoArticleFoundError}
+    #
     def next
       request Next.new
     end
 
+    # Get the stat line for the last article.
+    #
+    # @return [NNTPResponse] Possible responses:
+    #   {NNTPLastResponse},
+    #   {NNTPNoNewsgroupSelectedError},
+    #   {NNTPInvalidArticleNumberError},
+    #   {NNTPNoArticleFoundError}
+    #
     def last
       request Last.new
     end
 
+    # Get the server's help info.
+    #
+    # @return [NNTPHelpResponse]
+    #
     def help
       request Help.new
     end
@@ -126,6 +206,7 @@ module Net
     #   {NNTPTransferNotPossibleError},
     #   {NNTPTransferFailedError},
     #   {NNTPTransferRejectedError}
+    #
     def ihave(message_id, article = nil, &block)
       resp = request IHaveFirstStage.new(message_id)
       return resp if resp.is_a?(Net::NNTPErrorResponse)
@@ -139,6 +220,12 @@ module Net
       read_response(IHaveSecondStage.new)
     end
 
+    # Close the connection.
+    #
+    # @return [NNTPQuitResponse]
+    #
+    # @note Any subsequent requests will result in a raised Exception.
+    #
     def quit
       request Quit.new
     end

@@ -115,6 +115,7 @@ describe Net::NNTP::Head do
     req.response_class(221).should eq(Net::NNTPHeadResponse)
     req.response_class(412).should eq(Net::NNTPNoNewsgroupSelectedError)
     req.response_class(420).should eq(Net::NNTPInvalidArticleNumberError)
+    req.response_class(430).should eq(Net::NNTPNoArticleFoundError)
   end
 end
 
@@ -123,7 +124,8 @@ describe Net::NNTP::Body do
     req = Net::NNTP::Body.new
     req.response_class(222).should eq(Net::NNTPBodyResponse)
     req.response_class(412).should eq(Net::NNTPNoNewsgroupSelectedError)
-    req.response_class(420).should eq(Net::NNTPInvalidArticleNumberError)
+    req.response_class(423).should eq(Net::NNTPInvalidArticleNumberError)
+    req.response_class(430).should eq(Net::NNTPNoArticleFoundError)
   end
 end
 
