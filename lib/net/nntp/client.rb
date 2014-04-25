@@ -13,19 +13,25 @@ module Net
     def self.start(host, port, &block)
       client = new
       client.connect(host, port)
-      block.call(client)
+      block.call(client) # TODO: wrap this in a begin/rescue/ensure block to ensure socket is closed
       client.close
     end
 
     # Connect to a NNTP session.
     #
-    # @param [host] host the hostname of the NNTP server
-    # @param [port] port the port of the NNTP server
+    # @param [String] host the hostname of the NNTP server
+    # @param [Integer] port the port of the NNTP server
+    # @param [Boolean] use_ssl
     #
     # @return [NNTPGreetingResponse] the greeting sent upon connecting to the server
     #
-    def connect(host, port)
-      @socket = TCPSocket.new(host, port)
+    def connect(host, port, use_ssl = false)
+      @socket = TCPSocket.new(host, port.to_i)
+      if use_ssl
+        @socket = OpenSSL::SSL::SSLSocket.new(@socket)
+        @socket.sync_close
+        @socket.connect
+      end
       read_greeting
     end
 

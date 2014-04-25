@@ -1,4 +1,5 @@
 require 'socket'
+require 'openssl'
 
 require_relative 'nntp/article'
 require_relative 'nntp/request'
