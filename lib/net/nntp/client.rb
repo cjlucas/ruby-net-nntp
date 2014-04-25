@@ -117,7 +117,7 @@ module Net
     #
     # @note range is a newer NNTP feature and may not be supported
     #
-    def list_group(group = nil, range = nil)
+    def listgroup(group = nil, range = nil)
       request Net::NNTP::ListGroup.new(group, range)
     end
 

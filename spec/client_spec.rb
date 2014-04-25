@@ -61,11 +61,11 @@ describe Net::NNTPClient do
     end
   end
 
-  describe '#list_group' do
+  describe '#listgroup' do
     it 'should return the correct response class' do
       mock_server_and_connect(@client,
         "211 120 72 217 comp.lang.ruby\r\n72\r\n76\r\n77\r\n78\r\n.\r\n")
-      @client.list_group('comp.lang.ruby').class.should eq(Net::NNTPListGroupResponse)
+      @client.listgroup('comp.lang.ruby').class.should eq(Net::NNTPListGroupResponse)
     end
   end
 
