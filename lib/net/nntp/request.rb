@@ -65,6 +65,25 @@ module Net
 
 
   module NNTP
+    class AuthInfoUser < NNTPRequest
+      METHOD = 'AUTHINFO USER'
+      RESPONSES = {
+        281 => NNTPAuthenticationAccepted,
+        381 => NNTPPasswordRequired,
+        483 => NNTPStrongerAuthenticationRequiredError,
+        502 => NNTPCommandUnavailableError,
+      }
+    end
+
+    class AuthInfoPass < NNTPRequest
+      METHOD = 'AUTHINFO PASS'
+      RESPONSES = {
+        281 => NNTPAuthenticationAccepted,
+        482 => NNTPCommandIssuedOutOfSequenceError,
+        502 => NNTPCommandUnavailableError,
+      }
+    end
+
     class Date < NNTPRequest
       METHOD = 'DATE'
       RESPONSES = { 111 => NNTPDateResponse }

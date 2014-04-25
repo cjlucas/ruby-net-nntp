@@ -121,9 +121,15 @@ module Net
   NNTPPostingNotPermittedError            = Class.new(NNTPErrorResponse)
   # 441
   NNTPPostingFailedError                  = Class.new(NNTPErrorResponse)
+  # 482 (RFC4643)
+  NNTPCommandIssuedOutOfSequenceError     = Class.new(NNTPErrorResponse)
+  # 483 (RFC4643)
+  NNTPStrongerAuthenticationRequiredError = Class.new(NNTPErrorResponse)
 
   # 502
-  NNTPServicePermenentlyUnavailableError = Class.new(NNTPErrorResponse)
+  NNTPServicePermenentlyUnavailableError  = Class.new(NNTPErrorResponse)
+  # 502 (RFC4643)
+  NNTPCommandUnavailableError             = Class.new(NNTPErrorResponse)
 
   NNTP_RESPONSES = {
     #(0..501) => NNTPResponse,

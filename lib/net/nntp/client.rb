@@ -6,9 +6,31 @@ module Net
       login(user, pass) unless [user, pass].include?(nil)
     end
 
-    def login(user, pass)
-      request "AUTHINFO USER #{user.chomp}"
-      request "AUTHINFO PASS #{pass.chomp}"
+    # Send an AUTHINFO USER request.
+    #
+    # @param [String] username the username to send
+    #
+    # @return [NNTPResponse] Possible responses:
+    #   {NNTPAuthenticationAccepted},
+    #   {NNTPPasswordRequired},
+    #   {NNTPStrongerAuthenticationRequiredError},
+    #   {NNTPCommandUnavailableError}
+    #
+    def authinfo_user(username)
+      request AuthInfoUser.new(username)
+    end
+
+    # Send an AUTHINFO PASS request.
+    #
+    # @param [String] password the password to send
+    #
+    # @return [NNTPResponse] Possible responses:
+    #   {NNTPAuthenticationAccepted},
+    #   {NNTPCommandIssuedOutOfSequenceError},
+    #   {NNTPCommandUnavailableError}
+    #
+    def authinfo_pass(password)
+      request AuthInfoPass.new(password)
     end
 
     def request(req)

@@ -157,3 +157,22 @@ describe Net::NNTP::IHaveSecondStage do
     req.response_class(437).should eq(Net::NNTPTransferRejectedError)
   end
 end
+
+describe Net::NNTP::AuthInfoUser do
+  it 'returns the correct response class' do
+    req = Net::NNTP::AuthInfoUser.new
+    req.response_class(281).should eq(Net::NNTPAuthenticationAccepted)
+    req.response_class(381).should eq(Net::NNTPPasswordRequired)
+    req.response_class(483).should eq(Net::NNTPStrongerAuthenticationRequiredError)
+    req.response_class(502).should eq(Net::NNTPCommandUnavailableError)
+  end
+end
+
+describe Net::NNTP::AuthInfoPass do
+  it 'returns the correct response class' do
+    req = Net::NNTP::AuthInfoPass.new
+    req.response_class(281).should eq(Net::NNTPAuthenticationAccepted)
+    req.response_class(482).should eq(Net::NNTPCommandIssuedOutOfSequenceError)
+    req.response_class(502).should eq(Net::NNTPCommandUnavailableError)
+  end
+end
