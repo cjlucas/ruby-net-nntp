@@ -62,14 +62,6 @@ module Net
       request Net::NNTP::AuthInfoPass.new(password)
     end
 
-    def request(req)
-      # use a generic request if a valid request subclass is not specifed
-      req = NNTPGenericRequest.new(req.to_s) unless req.is_a?(NNTPRequest)
-
-      write_short(req.raw)
-      read_response(req)
-    end
-
     # Get the current time.
     #
     # @return [NNTPDateResponse]
@@ -282,6 +274,14 @@ module Net
     end
 
     private
+
+    def request(req)
+      # use a generic request if a valid request subclass is not specifed
+      req = NNTPGenericRequest.new(req.to_s) unless req.is_a?(NNTPRequest)
+
+      write_short(req.raw)
+      read_response(req)
+    end
 
     def close
       @socket.close
