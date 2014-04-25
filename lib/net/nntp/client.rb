@@ -1,9 +1,32 @@
 module Net
   class NNTPClient
-    def initialize(host, port, user, pass)
+    # A block interface for a NNTP session.
+    #
+    # @param [host] host the hostname of the NNTP server
+    # @param [port] port the port of the NNTP server
+    #
+    # @yield [nntp]
+    # @yieldparam [NNTPClient]
+    #
+    # @return [void]
+    #
+    def self.start(host, port, &block)
+      client = new
+      client.connect(host, port)
+      block.call(client)
+      client.close
+    end
+
+    # Connect to a NNTP session.
+    #
+    # @param [host] host the hostname of the NNTP server
+    # @param [port] port the port of the NNTP server
+    #
+    # @return [NNTPGreetingResponse] the greeting sent upon connecting to the server
+    #
+    def connect(host, port)
       @socket = TCPSocket.new(host, port)
       read_greeting
-      login(user, pass) unless [user, pass].include?(nil)
     end
 
     # Send an AUTHINFO USER request.
