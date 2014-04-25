@@ -123,4 +123,20 @@ describe Net::NNTPClient do
       @client.quit.class.should eq(Net::NNTPQuitResponse)
     end
   end
+
+  describe '#capabilities' do
+    it 'should return the correct response class' do
+      mock_server_and_connect(@client,
+        "101 Capabilities list:\r\nVERSION 1\r\nAUTHINFO USER PASS\r\n.\r\n")
+      @client.capabilities.class.should eq(Net::NNTPCapabilitiesResponse)
+    end
+  end
+
+  describe '#mode_reader' do
+    it 'should return the correct response class' do
+      mock_server_and_connect(@client,
+        "201 Welcome (fx16.iad) (No Posting)\r\n")
+      @client.mode_reader.class.should eq(Net::NNTPPostingProhibited)
+    end
+  end
 end
