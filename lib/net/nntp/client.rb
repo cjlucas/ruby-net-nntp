@@ -40,7 +40,7 @@ module Net
     #   {NNTPCommandUnavailableError}
     #
     def authinfo_user(username)
-      request AuthInfoUser.new(username)
+      request Net::NNTP::AuthInfoUser.new(username)
     end
 
     # Send an AUTHINFO PASS request.
@@ -53,7 +53,7 @@ module Net
     #   {NNTPCommandUnavailableError}
     #
     def authinfo_pass(password)
-      request AuthInfoPass.new(password)
+      request Net::NNTP::AuthInfoPass.new(password)
     end
 
     def request(req)
@@ -69,7 +69,7 @@ module Net
     # @return [NNTPDateResponse]
     #
     def date
-      request Date.new
+      request Net::NNTP::Date.new
     end
 
     # Select a group.
@@ -80,7 +80,7 @@ module Net
     #   {NNTPGroupResponse}, {NNTPInvalidNewsgroupError}
     #
     def group(group)
-      request Group.new(group)
+      request Net::NNTP::Group.new(group)
     end
 
     # List the articles of a group
@@ -98,7 +98,7 @@ module Net
     # @note range is a newer NNTP feature and may not be supported
     #
     def list_group(group = nil, range = nil)
-      request ListGroup.new(group, range)
+      request Net::NNTP::ListGroup.new(group, range)
     end
 
     # Get the head of an article.
@@ -114,7 +114,7 @@ module Net
     #   {NNTPNoArticleFoundError}
     #
     def head(param = nil)
-      request Head.new(param)
+      request Net::NNTP::Head.new(param)
     end
 
     # Get the body of an article.
@@ -130,7 +130,7 @@ module Net
     #   {NNTPNoArticleFoundError}
     #
     def body(param = nil)
-      request Body.new(param)
+      request Net::NNTP::Body.new(param)
     end
 
     # Select an article
@@ -145,7 +145,7 @@ module Net
     #   {NNTPNoArticleFoundError}
     #
     def article(param = nil)
-      request Article.new(param)
+      request Net::NNTP::Article.new(param)
     end
 
     # Get the stat line for an article.
@@ -161,7 +161,7 @@ module Net
     #   {NNTPNoArticleFoundError}
     #
     def stat(param = nil)
-      request Stat.new(param)
+      request Net::NNTP::Stat.new(param)
     end
 
     # Get the stat line for the next article.
@@ -173,7 +173,7 @@ module Net
     #   {NNTPNoArticleFoundError}
     #
     def next
-      request Next.new
+      request Net::NNTP::Next.new
     end
 
     # Get the stat line for the last article.
@@ -185,7 +185,7 @@ module Net
     #   {NNTPNoArticleFoundError}
     #
     def last
-      request Last.new
+      request Net::NNTP::Last.new
     end
 
     # Get the server's help info.
@@ -193,7 +193,7 @@ module Net
     # @return [NNTPHelpResponse]
     #
     def help
-      request Help.new
+      request Net::NNTP::Help.new
     end
 
     # Post an article.
@@ -217,7 +217,7 @@ module Net
     #   {NNTPPostingFailedError}
     #
     def post(article = nil, &block)
-      resp = request Post.new
+      resp = request Net::NNTP::Post.new
       return resp if resp.is_a?(Net::NNTPErrorResponse)
 
       if block_given?
@@ -226,7 +226,7 @@ module Net
       end
 
       write_long(article.to_s)
-      read_response(Post.new)
+      read_response(Net::NNTP::Post.new)
     end
 
     # Notify the server that an article is available to be sent.
@@ -253,7 +253,7 @@ module Net
     #   {NNTPTransferRejectedError}
     #
     def ihave(message_id, article = nil, &block)
-      resp = request IHaveFirstStage.new(message_id)
+      resp = request Net::NNTP::IHaveFirstStage.new(message_id)
       return resp if resp.is_a?(Net::NNTPErrorResponse)
 
       if block_given?
@@ -262,7 +262,7 @@ module Net
       end
 
       write_long(article)
-      read_response(IHaveSecondStage.new)
+      read_response(Net::NNTP::IHaveSecondStage.new)
     end
 
     # Close the connection.
@@ -272,7 +272,7 @@ module Net
     # @note Any subsequent requests will result in a raised Exception.
     #
     def quit
-      request Quit.new
+      request Net::NNTP::Quit.new
     end
 
     private
