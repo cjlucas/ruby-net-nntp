@@ -35,6 +35,28 @@ module Net
       read_greeting
     end
 
+    # Get the server's current capabilities
+    #
+    # @return [NNTPCapabilitiesResponse]
+    #
+    # @note they keyword argument is not used by RFC3977, but it is
+    # listed as an optional parameter of CAPABILITIES.
+    #
+    def capabilities(keyword = nil)
+      request Net::NNTP::Capabilities.new(keyword)
+    end
+
+    # Switch mode (for use on a mode-switching server)
+    #
+    # @return [NNTPResponse] Possible responses:
+    #   {NNTPPostingAllowed},
+    #   {NNTPPostingProhibited},
+    #   {NNTPServicePermenentlyUnavailableError}
+    #
+    def mode_reader
+      request Net::NNTP::ModeReader.new
+    end
+
     # Send an AUTHINFO USER request.
     #
     # @param [String] username the username to send

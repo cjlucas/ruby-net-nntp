@@ -168,5 +168,18 @@ module Net
       METHOD = 'HELP'
       RESPONSES = { 100 => NNTPHelpResponse }
     end
+
+    class Capabilities < NNTPRequest
+      METHOD = 'CAPABILITIES'
+      RESPONSES = { 101 => NNTPCapabilitiesResponse }
+    end
+
+    class ModeReader < NNTPRequest
+      METHOD = 'MODE READER'
+      RESPONSES = {
+        200 => NNTPPostingAllowed,
+        201 => NNTPPostingProhibited,
+      }
+    end
   end
 end

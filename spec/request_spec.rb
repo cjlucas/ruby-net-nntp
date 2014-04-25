@@ -176,3 +176,19 @@ describe Net::NNTP::AuthInfoPass do
     req.response_class(502).should eq(Net::NNTPCommandUnavailableError)
   end
 end
+
+describe Net::NNTP::Capabilities do
+  it 'returns the correct response class' do
+    req = Net::NNTP::Capabilities.new
+    req.response_class(101).should eq(Net::NNTPCapabilitiesResponse)
+  end
+end
+
+describe Net::NNTP::ModeReader do
+  it 'returns the correct response class' do
+    req = Net::NNTP::ModeReader.new
+    req.response_class(200).should eq(Net::NNTPPostingAllowed)
+    req.response_class(201).should eq(Net::NNTPPostingProhibited)
+    req.response_class(502).should eq(Net::NNTPServicePermenentlyUnavailableError)
+  end
+end

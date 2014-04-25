@@ -88,8 +88,13 @@ module Net
     end
   end
 
-  NNTPHelpResponse = Class.new(NNTPLongResponse)
+  NNTPHelpResponse          = Class.new(NNTPLongResponse)
+  NNTPCapabilitiesResponse  = Class.new(NNTPLongResponse)
 
+  # 200
+  NNTPPostingAllowed          = Class.new(NNTPOKResponse)
+  # 201
+  NNTPPostingProhibited       = Class.new(NNTPOKResponse)
   # 235, 240
   NNTPArticleReceived         = Class.new(NNTPOKResponse)
   # 281
